@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="LabLight Evolux: laboratorio interactivo de óptica. Predice, mide la iluminancia a distintas distancias, analiza y concluye.">
+<meta name="theme-color" content="#20504b">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LabLight Evolux · Laboratorio de luz">
+<meta property="og:description" content="Cambia la distancia a una fuente de luz y descubre cómo varía la iluminancia.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%80%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<title>LabLight Evolux · Laboratorio de luz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#efe9dc;--fg:#152b29;--card:#faf7ee;--bd:#cfc8b6;--pri:#20504b;--acc:#f5a623;--mut:#5f7370;--side:#20504b;--sf:#f6f1e4;--sa:#2b6059;--pf:#f6f1e4;--sans:'Space Grotesk',system-ui,sans-serif;--mono:'DM Mono',ui-monospace,monospace;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1f1d;--fg:#eee8d8;--card:#172b28;--bd:#2c4541;--mut:#93aaa6;--side:#0b1715;--sa:#1a302d;--pri:#f5a623;--pf:#152b29}}
+:root[data-theme="dark"]{--bg:#0f1f1d;--fg:#eee8d8;--card:#172b28;--bd:#2c4541;--mut:#93aaa6;--side:#0b1715;--sa:#1a302d;--pri:#f5a623;--pf:#152b29}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+.app{min-height:100dvh;display:grid;grid-template-columns:250px minmax(0,1fr)}
+.side{background:var(--side);color:var(--sf);padding:26px 18px;display:flex;flex-direction:column;position:sticky;top:0;height:100dvh}
+.brand{display:flex;align-items:center;gap:11px}
+.sym{width:35px;height:35px;border-radius:11px;background:var(--acc);display:grid;place-items:center;box-shadow:0 5px 0 rgba(0,0,0,.3)}
+.sym::after{content:'';width:13px;height:13px;border-radius:50%;background:var(--side);box-shadow:0 0 0 4px rgba(245,166,35,.45)}
+.bn{font-weight:700;letter-spacing:-.04em}.bs,.eyebrow,.mono{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.bs{opacity:.6;margin-top:2px;font-size:9px}
+.kick{margin:40px 10px 0;opacity:.5;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase}
+.stages{list-style:none;padding:14px 0 0;margin:0;display:grid;gap:6px}
+.st{display:flex;align-items:center;gap:11px;width:100%;padding:10px;border:0;background:transparent;color:var(--sf);opacity:.65;text-align:left;border-radius:12px}
+.st:hover:not(:disabled),.st.on{background:var(--sa);opacity:1}.st:disabled{opacity:.35;cursor:not-allowed}
+.si{width:24px;height:24px;flex:0 0 24px;border-radius:50%;border:1px solid rgba(246,241,228,.35);display:grid;place-items:center;font-family:var(--mono);font-size:10px}
+.st.done .si{background:var(--acc);color:#152b29;border-color:var(--acc)}
+.st strong{display:block;font-size:12px}.st span span{display:block;font-size:10px;opacity:.7;margin-top:2px}
+.note{margin-top:auto;background:var(--sa);padding:14px;border-radius:14px;font-size:11px;line-height:1.45;opacity:.9}
+.top{height:64px;display:flex;justify-content:space-between;align-items:center;padding:0 40px;border-bottom:1px solid var(--bd)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#3cb371;margin-right:8px}
+.ghost,.prim{border-radius:999px;padding:10px 18px;font-size:13px;font-weight:500;border:1px solid var(--bd);background:transparent}
+.prim{background:var(--pri);color:var(--pf);border-color:var(--pri)}.prim:disabled,.ghost:disabled{opacity:.4;cursor:not-allowed}
+.work{padding:34px 40px 60px;max-width:1080px}
+.hero{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-end}
+h1{font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.045em;line-height:1;margin:10px 0 14px}h1 em{color:var(--pri);font-style:normal;text-decoration:underline;text-decoration-color:var(--acc);text-decoration-thickness:6px;text-underline-offset:4px}
+.eyebrow{color:var(--mut)}.hc{max-width:520px;color:var(--mut);line-height:1.55;margin:0}
+.badge{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px 16px;font-size:12px;color:var(--mut)}.badge strong{display:block;color:var(--fg);margin-bottom:3px}
+.prog{margin:28px 0 8px;height:6px;background:var(--bd);border-radius:9px}.prog i{display:block;height:100%;background:var(--acc);border-radius:9px;transition:width .4s}
+.pl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--mut);margin-bottom:26px}.pl .on{color:var(--fg)}
+.sh{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px}.sh h2{font-size:1.9rem;letter-spacing:-.04em;margin:6px 0 0}.sh p{max-width:430px;margin:0;color:var(--mut);font-size:14px;line-height:1.5}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:22px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.mb{margin-bottom:18px}
+h3{margin:0 0 8px;font-size:1rem}.help{color:var(--mut);font-size:13px;line-height:1.5;margin:0 0 16px}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{text-align:left;padding:14px 16px;border-radius:14px;border:1.5px solid var(--bd);background:transparent}.opt strong{display:block;text-transform:capitalize}.opt span{font-size:12px;color:var(--mut)}
+.opt.sel{border-color:var(--acc);background:rgba(245,166,35,.14)}
+.bench{display:flex;align-items:center;justify-content:center;gap:10px;margin:22px 0 10px}
+.dev{text-align:center;font-family:var(--mono);font-size:10px;color:var(--mut)}.db{width:52px;height:78px;border-radius:12px;border:2px solid var(--fg);display:grid;place-items:center;font-size:22px;margin:0 auto 6px}.db.src{background:var(--acc)}
+.wire{flex:1;max-width:90px;height:2px;background:repeating-linear-gradient(90deg,var(--fg) 0 6px,transparent 6px 12px)}
+.ctl{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}.cv{font-family:var(--mono);font-size:1.3rem;color:var(--pri)}
+input[type=range]{width:100%;accent-color:var(--acc)}.rs{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--mut);margin-top:6px}
+.reading{margin:14px 0}.rn{font-size:3.4rem;font-weight:700;letter-spacing:-.05em}.ru{font-family:var(--mono);color:var(--mut);margin-left:8px}
+.nb{background:rgba(245,166,35,.12);border-radius:12px;padding:11px 13px;font-size:12px;color:var(--mut);margin-top:14px;line-height:1.45}
+.ml{display:grid;grid-template-columns:1fr 1.2fr;gap:18px}
+.tw{max-height:330px;overflow:auto}table{width:100%;border-collapse:collapse;font-size:13px}th{font-family:var(--mono);font-size:10px;text-transform:uppercase;text-align:left;color:var(--mut);padding:6px 4px}td{padding:8px 4px;border-top:1px solid var(--bd)}
+.empty{text-align:center;color:var(--mut);padding:30px 0;font-size:13px}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+.chart{display:flex;align-items:flex-end;gap:14px;height:240px;border-left:1px solid var(--bd);border-bottom:1px solid var(--bd);padding:0 14px}
+.bi{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;position:relative}
+.bar{width:100%;max-width:70px;background:var(--pri);border-radius:8px 8px 0 0;position:relative;min-height:4px}.bv{position:absolute;top:-20px;left:0;right:0;text-align:center;font-family:var(--mono);font-size:11px}
+.bl{font-family:var(--mono);font-size:10px;color:var(--mut);position:absolute;bottom:-22px}
+.stat{display:flex;justify-content:space-between;padding:9px 0;border-top:1px solid var(--bd);font-size:13px;color:var(--mut)}.stat strong{color:var(--fg)}
+.formula{margin-top:12px;font-family:var(--mono);font-size:12px;background:rgba(245,166,35,.15);padding:10px;border-radius:10px;text-align:center}
+textarea{width:100%;min-height:150px;border:1.5px solid var(--bd);border-radius:14px;background:transparent;padding:14px;resize:vertical;line-height:1.5}textarea:focus{outline:2px solid var(--acc)}
+.ok{display:flex;gap:10px;align-items:center;background:rgba(60,179,113,.15);padding:12px 14px;border-radius:12px;margin-bottom:16px;font-size:13px}
+.sv{font-size:12px;color:var(--mut)}
+.warn{background:rgba(245,166,35,.18);border:1px solid var(--acc);border-radius:12px;padding:12px 14px;font-size:13px;line-height:1.5;margin-top:14px}
+.opt:disabled{opacity:.45;cursor:not-allowed}
+.do{background:rgba(245,166,35,.15);border-left:4px solid var(--acc);border-radius:10px;padding:11px 14px;margin:0 0 18px;font-size:14px;line-height:1.45}
+.flow{margin-top:14px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--mut);line-height:1.8}
+.mvp{max-width:62%;text-transform:none;letter-spacing:.01em;line-height:1.3;font-size:11px}
+.q{margin:0;padding-left:18px;font-size:14px;line-height:1.75}
+.eq{font-family:var(--mono);font-size:1.6rem;text-align:center;margin:10px 0;color:var(--pri);font-weight:700}
+.sim{display:inline-block;background:rgba(245,166,35,.25);border-radius:999px;padding:3px 10px;font-family:var(--mono);font-size:10px;margin-bottom:10px}
+@media(max-width:860px){.app{grid-template-columns:1fr}.side{position:static;height:auto;padding:14px}.note,.kick{display:none}.stages{display:flex;overflow-x:auto;padding-top:12px}.st{width:auto;flex:0 0 auto}.st span span{display:none}.top{padding:0 18px}.work{padding:24px 18px 50px}.g2,.ml{grid-template-columns:1fr}.pl{display:none}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<script>
+const KEY='lablight-evolux-experiment';
+const PER=1,NEED=5; // 1 medición en cada una de 5 distancias diferentes
+let justDone=null; // distancia que se acaba de completar (no se guarda)
+const STG=[['Predicción','Antes de medir'],['Preparación','Ajusta el banco'],['Medición','Captura evidencia'],['Análisis','Busca el patrón'],['Conclusión','Explica lo visto']];
+const D={stage:0,prediction:null,distance:40,measurements:[],conclusion:'',done:false,source:null,runs:[]};
+let s=Object.assign({},D),saved=false;
+try{const r=JSON.parse(localStorage.getItem(KEY)||'{}');s=Object.assign(s,r);saved=!!s.conclusion}catch(e){}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}};
+const SRC=[{id:'vela',n:'Vela',e:'🕯️',I:1,d:'Llama pequeña: luz muy débil'},{id:'led',n:'Ampolleta LED',e:'💡',I:60,d:'Reparte la luz hacia todos lados'},{id:'linterna',n:'Linterna con lente',e:'🔦',I:1500,d:'Concentra la luz en un haz'}]; // I = intensidad luminosa aproximada (cd), SIMULADA
+const r=v=>v<10?Math.round(v*10)/10:Math.round(v);
+const total=()=>s.runs.reduce((a,x)=>a+x.data.length,0)+s.measurements.length;
+const lux=(d,n)=>{const I=(SRC.find(x=>x.id===s.source)||SRC[1]).I;return Math.max(.1,r(I/Math.pow(d/100,2)*(1+Math.sin(n*8.31+d*.31)*.045)))}; // E = I/d² con pequeña variación (dato SIMULADO)
+const cnt=d=>s.measurements.filter(m=>m.distance===d).length;
+const full=()=>[...new Set(s.measurements.map(m=>m.distance))].filter(d=>cnt(d)>=PER).sort((a,b)=>a-b);
+const can=i=>i===0||(i===1&&!!s.prediction)||(i===2&&!!s.prediction&&!!s.source)||(i>=3&&full().length>=NEED);
+s.runs=Array.isArray(s.runs)?[...s.runs]:[];{const seen={};s.measurements=s.measurements.filter(m=>!seen[m.distance]&&(seen[m.distance]=1))} // datos guardados con un protocolo anterior
+if(s.measurements.length&&!s.source)s.source='led';
+if(s.stage>=2&&!s.source)s.stage=1;
+if(s.stage>=3&&full().length<NEED){s.stage=2;s.done=false}
+const bench=`<div class="bench"><div class="dev"><div class="db src">☀</div>fuente de luz</div><div class="wire"></div><div class="dev"><div class="db" style="border:0;font-size:26px">↔</div>distancia (cm)</div><div class="wire"></div><div class="dev"><div class="db">▯</div>sensor</div></div>`;
+const TODO=['Elige una opción y continúa.','Elige la fuente de luz y continúa.','Mide una vez en cada distancia. Cambia de distancia después de cada medición hasta completar 5.','Compara los valores obtenidos para cada distancia. Observa cómo cambia la iluminancia y contrasta tus resultados con tu predicción inicial.','Escribe qué observaste y por qué crees que ocurrió.'];
+const head=(e,t,p)=>`<div class="sh"><div><div class="eyebrow">${e}</div><h2>${t}</h2></div><p>${p}</p></div>${s.stage===4&&s.done?'':`<div class="do"><strong>Qué hacer:</strong> ${TODO[s.stage]}</div>`}`;
+const foot=(nl,ok)=>`<div class="foot"><button class="ghost" data-a="prev" ${s.stage===0?'disabled':''}>← Anterior</button>${s.stage<4?`<button class="prim" data-a="next" ${ok?'':'disabled'}>${nl} →</button>`:'<span></span>'}</div>`;
+const slider=(label,id,min,max,step,val,unit,a,b)=>`<div class="card"><div class="ctl"><strong>${label}</strong><span class="cv" id="v-${id}">${val}${unit}</span></div><input type="range" data-r="${id}" min="${min}" max="${max}" step="${step}" value="${val}" aria-label="${label}"><div class="rs"><span>${a}</span><span>${b}</span></div></div>`;
+function stage0(){const o=[['more','mayor','Llegará más luz al sensor.'],['less','menor','La señal se debilitará.'],['same','igual','La distancia no importa.']];
+return head('01 / formula una hipótesis','Primero, predice.','')+`<div class="g2"><div class="card"><h3>Pregunta de investigación</h3><p class="help">¿Cómo cambia la iluminancia al modificar la distancia a la fuente de luz?</p><div>Creo que al alejar la fuente de luz, la iluminancia será…</div><div class="opts">${o.map(x=>`<button class="opt ${s.prediction===x[0]?'sel':''}" data-a="pred" data-v="${x[0]}"><strong>${x[1]}</strong><span>${x[2]}</span></button>`).join('')}</div><div class="nb">No hay respuestas correctas todavía.</div></div><div class="card"><h3>La luz deja un rastro</h3>${bench}</div></div>`+foot('Preparar montaje',!!s.prediction)}
+function stage1(){const used=s.runs.map(x=>x.source),locked=s.measurements.length>0;
+return head('02 / prepara el montaje','Elige la fuente de luz.','')+`<div class="opts" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">${SRC.map(x=>{const u=used.includes(x.id);return `<button class="opt ${s.source===x.id?'sel':''}" data-a="src" data-v="${x.id}" ${u||locked?'disabled':''}><strong>${x.e} ${x.n}</strong><span>${x.d}${u?' · ya usada':''}</span></button>`}).join('')}</div><div class="card" style="margin-top:18px">${bench}<div class="nb"><strong>Mantén la misma fuente de luz y su configuración durante todo el experimento.</strong><br>Modificas: distancia (cm) · Mides: iluminancia (lux)</div></div>`+foot('Ir a medición',!!s.source)}
+function stage2(){const src=SRC.find(x=>x.id===s.source),c=cnt(s.distance),done=c>=PER,nf=full().length,ok=nf>=NEED;
+const msg=!done?'':(justDone===s.distance?`<div class="ok" style="margin:14px 0 0"><span>✓</span><div><strong>Medido a ${s.distance} cm</strong><br>Ahora selecciona una distancia diferente.</div></div>`:`<div class="warn"><strong>Esta distancia ya fue completada.</strong><br>Si mantienes la misma distancia, se espera obtener una iluminancia similar. Para investigar cómo cambia la luz, selecciona una distancia diferente.</div>`);
+return head('03 / mide','Mide a distintas distancias.','')+`<div class="mb">${slider('Distancia (cm)','dist',20,120,10,s.distance,' cm','20 cm / cerca','120 cm / lejos')}</div><div class="ml"><div class="card"><span class="sim">MODO MVP · DATO SIMULADO</span><h3>Iluminancia (lux)</h3><div class="reading"><span class="rn">${lux(s.distance,s.measurements.length)}</span><span class="ru">lux</span></div><p class="help" style="margin:0">${src.e} ${src.n} · valor simulado</p><div class="nb"><strong>Distancias medidas: ${nf}/${NEED}</strong></div>${msg}<button class="prim" style="width:100%;margin-top:14px" data-a="cap" ${done?'disabled':''}>${done?'Distancia medida':'Medir a '+s.distance+' cm'}</button></div><div class="card"><h3>Registro de datos</h3>${s.measurements.length?`<div class="tw"><table><thead><tr><th>N.º</th><th>Distancia (cm)</th><th>Iluminancia (lux)</th></tr></thead><tbody>${s.measurements.map((m,i)=>`<tr><td>${String(i+1).padStart(2,'0')}</td><td>${m.distance}</td><td>${m.lux}</td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Aún no hay lecturas.<br>Mide la primera para empezar.</div>'}</div></div>`+foot(ok?'Analizar resultados':`Completa ${NEED} distancias (${nf}/${NEED})`,ok)}
+function chart(g){const mx=Math.max(...g.map(x=>x.a),1),p=Math.pow(10,Math.floor(Math.log10(mx))),nm=[1,2,5,10].map(k=>k*p).find(v=>v>=mx),W=480,H=300,L=78,B=54,T=24,R=12,iw=W-L-R,ih=H-T-B,bw=Math.min(60,iw/g.length*.6),Y=v=>T+ih-v/nm*ih;
+let o=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto" role="img" aria-label="Iluminancia (lux) según la distancia (cm)" font-family="var(--mono)" font-size="13" fill="currentColor">`;
+for(let i=0;i<=4;i++){const v=nm*i/4;o+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--bd)"/><text x="${L-8}" y="${Y(v)+4}" text-anchor="end">${+v.toFixed(1)}</text>`}
+g.forEach((x,i)=>{const cx=L+iw*(i+.5)/g.length,y=Y(x.a);o+=`<rect x="${cx-bw/2}" y="${y}" width="${bw}" height="${T+ih-y}" rx="5" fill="var(--pri)"/><text x="${cx}" y="${y-6}" text-anchor="middle" font-weight="700">${x.a}</text><text x="${cx}" y="${T+ih+20}" text-anchor="middle">${x.d}</text>`});
+return o+`<text x="${L+iw/2}" y="${H-6}" text-anchor="middle" font-weight="700">Distancia (cm)</text><text transform="translate(14 ${T+ih/2}) rotate(-90)" text-anchor="middle" font-weight="700">Iluminancia (lux)</text></svg>`}
+function extra(g){const runs=[...s.runs.map(x=>({n:SRC.find(y=>y.id===x.source).n,data:x.data})),{n:SRC.find(y=>y.id===s.source).n,data:g.map(x=>({d:x.d,a:x.a}))}],left=SRC.length-runs.length;
+return (runs.length>1?`<div class="card" style="margin-top:18px"><h3>Comparación de fuentes</h3><div class="g2">${runs.map(x=>`<div><p class="help" style="margin:0 0 6px"><strong>${x.n}</strong></p>${chart(x.data)}</div>`).join('')}</div><div class="nb">Fíjate en la escala del eje Y: cada gráfico tiene la suya.</div></div>`:'')+(left>0?`<div class="card" style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><h3 style="margin:0">¿Y con otra fuente de luz?</h3><p class="help" style="margin:4px 0 0">Repite el experimento y compara los gráficos.</p></div><button class="ghost" data-a="another">Medir con otra fuente →</button></div>`:'')}
+function stage3(){const g=full().map(d=>{const v=s.measurements.filter(m=>m.distance===d).map(m=>m.lux);return{d,n:v.length,a:r(v.reduce((x,y)=>x+y,0)/v.length)}});
+const f=g[0],mod=x=>r(f.a*Math.pow(f.d/x.d,2)),pr={less:'menor',more:'mayor',same:'igual'}[s.prediction]||'—';
+return head('04 / compara y analiza','Compara y analiza.','')+`<span class="sim">MODO MVP · DATOS SIMULADOS</span><div class="g2"><div class="card"><h3>Iluminancia según la distancia · ${SRC.find(x=>x.id===s.source).n}</h3>${chart(g)}${g.length<2?'<div class="nb">Mediste a una sola distancia. Vuelve a Medición y agrega otras para poder comparar.</div>':''}</div><div class="card"><h3>Resultados por distancia</h3><div class="tw"><table><thead><tr><th>Distancia (cm)</th><th>Iluminancia (lux)</th></tr></thead><tbody>${g.map(x=>`<tr><td>${x.d}</td><td>${x.a}</td></tr>`).join('')}</tbody></table></div><h3 style="margin-top:20px">Tu predicción</h3><p class="help">Dijiste que sería <strong>${pr}</strong>.</p></div></div><div class="card" style="margin-top:18px"><h3>Modelo teórico de referencia</h3><div class="eq">E ∝ 1 / d²</div><p class="help" style="text-align:center">E = iluminancia (lux) · d = distancia (cm)</p><div class="nb">El modelo del inverso del cuadrado representa un comportamiento ideal. Los resultados pueden presentar diferencias debido a las condiciones de medición.</div><p class="help" style="margin:16px 0 8px">Referencia desde tu primer valor (${f.d} cm):</p><div class="tw"><table><thead><tr><th>Distancia (cm)</th><th>Iluminancia según modelo (lux)</th></tr></thead><tbody>${g.map(x=>`<tr><td>${x.d}</td><td>${mod(x)}</td></tr>`).join('')}</tbody></table></div></div>`+extra(g)+foot('Escribir conclusión',true)}
+const esc=x=>x.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+function finish(){const g=full().map(d=>{const v=s.measurements.filter(m=>m.distance===d).map(m=>m.lux);return{d,a:r(v.reduce((x,y)=>x+y,0)/v.length)}});
+const f=g[0]?.a||0,l=g[g.length-1]?.a||0,dec=g.length>1&&f?Math.round((1-l/f)*100)+'%':'—',pr={less:'menor',more:'mayor',same:'igual'}[s.prediction]||'—';
+return head('experimento completado','¡Terminaste el experimento!','')+`<div class="card"><div class="ok" style="font-size:15px">✓ <div><strong>Experimento finalizado</strong><br>Tu conclusión quedó guardada.</div></div><div class="stat"><span>tu predicción</span><strong>${pr}</strong></div><div class="stat"><span>lecturas registradas</span><strong>${total()}</strong></div><div class="stat"><span>fuentes de luz usadas</span><strong>${s.runs.length+1}</strong></div><div class="stat"><span>distancias medidas</span><strong>${g.length}</strong></div><div class="stat"><span>cambio de iluminancia extremo a extremo</span><strong>${dec}</strong></div><h3 style="margin-top:20px">Tu conclusión</h3><p style="white-space:pre-wrap;line-height:1.55;margin:0">${esc(s.conclusion)}</p><div class="foot"><button class="ghost" data-a="edit">← Editar conclusión</button><button class="prim" data-a="reset">Hacer otro experimento</button></div></div>`}
+function stage4(){if(s.done)return finish();return head('05 / explica lo aprendido','Cierra el ciclo.','')+`<div><div class="card"><div class="ok">✓ <div><strong>Experimento completado</strong><br>${total()} lecturas quedaron en tu cuaderno.</div></div><h3>Mi conclusión</h3><textarea id="concl" placeholder="Ejemplo: al aumentar la distancia...">${s.conclusion.replace(/</g,'&lt;')}</textarea><div class="foot" style="margin-top:14px"><span class="sv" id="sv">${saved?'✓ Guardado':''}</span><button class="prim" id="save" data-a="save" ${s.conclusion.trim()?'':'disabled'}>Guardar conclusión</button></div></div></div>`+foot('',true)}
+function render(){const F=[stage0,stage1,stage2,stage3,stage4];
+app.innerHTML=`<aside class="side"><div class="brand"><div class="sym"></div><div><div class="bn">LabLight</div><div class="bs">Evolux · laboratorio 01</div></div></div><div class="kick">Ruta de investigación</div><ol class="stages">${STG.map((x,i)=>`<li><button class="st ${s.stage===i?'on':''} ${s.stage>i?'done':''}" data-a="go" data-v="${i}" ${can(i)?'':'disabled'}><span class="si">${s.stage>i?'✓':i+1}</span><span><strong>${x[0]}</strong><span>${x[1]}</span></span></button></li>`).join('')}</ol></aside><div><div class="top"><div class="mono mvp"><span class="dot"></span>Modo MVP: datos simulados para representar el comportamiento experimental.</div><button class="ghost" data-a="reset">↺ Reiniciar</button></div><main class="work"><div class="hero"><div><div class="eyebrow">Laboratorio interactivo / óptica</div><h1>Aprende la luz <em>midiéndola.</em></h1><p class="hc">Cambia la distancia a una fuente de luz y descubre cómo varía la iluminancia.</p><div class="flow">PREDICE → PREPARA → MODIFICA LA DISTANCIA → MIDE → COMPARA → ANALIZA → CONCLUYE</div></div><div class="badge"><strong>Pregunta abierta</strong>¿La luz llega igual de lejos<br>si la fuente se aleja?</div></div><div class="prog"><i style="width:${s.stage/4*100}%"></i></div><div class="pl">${STG.map((x,i)=>`<span class="${i<=s.stage?'on':''}">${x[0]}</span>`).join('')}</div><section>${F[s.stage]()}</section></main></div>`;persist()}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b||b.disabled)return;const a=b.dataset.a,v=b.dataset.v;if(a!=='cap')justDone=null;
+if(a==='go'&&can(+v))s.stage=+v;else if(a==='next')s.stage=Math.min(4,s.stage+1);else if(a==='prev')s.stage=Math.max(0,s.stage-1);
+else if(a==='pred')s.prediction=v;else if(a==='src'){if(!s.measurements.length)s.source=v}else if(a==='another'){const dd=full().map(d=>({d,a:s.measurements.find(m=>m.distance===d).lux}));s.runs.push({source:s.source,data:dd});s.measurements=[];s.source=null;s.stage=1;s.distance=40}
+else if(a==='cap'){if(cnt(s.distance)>=PER)return;s.measurements.push({id:Date.now(),distance:s.distance,lux:lux(s.distance,s.measurements.length)});justDone=cnt(s.distance)>=PER?s.distance:null}
+else if(a==='save'){saved=true;s.done=true}else if(a==='edit'){s.done=false}
+else if(a==='reset'){s=Object.assign({},D,{measurements:[],runs:[]});saved=false;try{localStorage.removeItem(KEY)}catch(x){}}
+render();if(['go','next','prev','reset','save','edit','another'].includes(a))window.scrollTo({top:0})});
+document.addEventListener('input',e=>{const t=e.target;
+if(t.dataset.r){s.distance=+t.value;document.getElementById('v-dist').textContent=t.value+' cm'}
+if(t.id==='concl'){s.conclusion=t.value;saved=false;document.getElementById('save').disabled=!t.value.trim();document.getElementById('sv').textContent='';persist()}});
+document.addEventListener('change',e=>{if(e.target.dataset.r){justDone=null;render()}});
+render();
+</script>
+</body>
+</html>
